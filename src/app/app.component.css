@@ -10,3 +10,7 @@ md-toolbar a:visited {
 md-card {
     margin-top: 10px;
 }
+
+.command-input {
+  width: 100%;
+}

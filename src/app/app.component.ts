@@ -1,7 +1,7 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import {Component, ChangeDetectorRef} from '@angular/core';
 
-import { NgBeaconService } from './ng-beacon.service';
-import { BluetoothUtilsService } from './bluetooth-utils.service';
+import {NgBeaconService} from './ng-beacon.service';
+import {BluetoothUtilsService} from './bluetooth-utils.service';
 
 @Component({
   selector: 'app-root',
@@ -19,10 +19,10 @@ export class AppComponent {
   beaconUrl = 'ngbeacon.io';
   debugLog = '';
 
-  constructor(
-    private ngBeacon: NgBeaconService,
-    private bluetoothUtils: BluetoothUtilsService,
-    private cdRef: ChangeDetectorRef) { }
+  constructor(private ngBeacon: NgBeaconService,
+              private bluetoothUtils: BluetoothUtilsService,
+              private cdRef: ChangeDetectorRef) {
+  }
 
   async connect() {
     this.connecting = true;
@@ -70,18 +70,29 @@ export class AppComponent {
   }
 
   uploadEddystone() {
-    this.ngBeacon.uploadEddystone({ name: this.beaconName }, this.beaconUrl);
+    this.ngBeacon.uploadEddystone({name: this.beaconName}, this.beaconUrl);
   }
 
   uploadTemperature() {
-    this.ngBeacon.uploadTemperature({ name: this.beaconName });
+    this.ngBeacon.uploadTemperature({name: this.beaconName});
   }
 
   uploadIBeacon() {
-    this.ngBeacon.uploadIBeacon({ name: this.beaconName });
+    this.ngBeacon.uploadIBeacon({name: this.beaconName});
   }
 
   readTemperature() {
     this.ngBeacon.uart.sendText(`ngbeacon.temperature()\n ngbeacon.humidity()\n`);
+  }
+
+  onKeyCmdInput(event: KeyboardEvent) {
+    switch (event.keyCode) {
+      case 13:
+        const inputField = <HTMLInputElement>event.target;
+        this.ngBeacon.uart.sendText(`${inputField.value}\n`);
+        inputField.value = '';
+        break;
+      default:
+    }
   }
 }
